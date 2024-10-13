@@ -1,0 +1,71 @@
+Layout extraction started at: 2024-10-13 05:25:31
+
+.
+|-- backend
+|   |-- auth
+|   |   `-- firebase.go
+|   |-- handlers
+|   |   |-- rental_property.go
+|   |   `-- user.go
+|   |-- middleware
+|   |   |-- auth.go
+|   |   |-- logger.go
+|   |   `-- public.go
+|   |-- models
+|   |   `-- rental_property.go
+|   |-- README.md
+|   |-- main.go
+|   `-- silicon-valley-garage-firebase-adminsdk-5ugqy-f4fe78d92d.json
+|-- frontend
+|   |-- src
+|   |   |-- app
+|   |   |   |-- admin
+|   |   |   |   `-- page.tsx
+|   |   |   |-- auth
+|   |   |   |   `-- AuthProvider.tsx
+|   |   |   |-- catalog
+|   |   |   |   `-- page.tsx
+|   |   |   |-- fonts
+|   |   |   |   |-- GeistMonoVF.woff
+|   |   |   |   `-- GeistVF.woff
+|   |   |   |-- login
+|   |   |   |   `-- page.tsx
+|   |   |   |-- profile
+|   |   |   |   `-- page.tsx
+|   |   |   |-- register
+|   |   |   |   `-- page.tsx
+|   |   |   |-- favicon.ico
+|   |   |   |-- globals.css
+|   |   |   |-- layout.tsx
+|   |   |   |-- metadata.ts
+|   |   |   `-- page.tsx
+|   |   |-- components
+|   |   |   |-- AdminDashboard.tsx
+|   |   |   |-- AuthFormContainer.tsx
+|   |   |   |-- Catalog.tsx
+|   |   |   |-- Header.tsx
+|   |   |   |-- LoadingSpinner.tsx
+|   |   |   |-- Login.tsx
+|   |   |   |-- Profile.tsx
+|   |   |   `-- Register.tsx
+|   |   |-- hooks
+|   |   |   `-- useAuth.ts
+|   |   |-- lib
+|   |   |   `-- firebase.ts
+|   |   |-- pages
+|   |   |-- types
+|   |   |   `-- RentalProperty.ts
+|   |   `-- utils
+|   |       `-- api.ts
+|   |-- README.md
+|   |-- next-env.d.ts
+|   |-- next.config.mjs
+|   |-- package-lock.json
+|   |-- package.json
+|   |-- postcss.config.mjs
+|   |-- tailwind.config.ts
+|   `-- tsconfig.json
+|-- README.md
+`-- template-progress.md
+
+22 directories, 45 files

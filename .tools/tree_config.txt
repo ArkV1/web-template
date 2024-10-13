@@ -1,0 +1,1 @@
+-L 5 --charset ascii -I "node_modules|.next|.git|.vscode|.idea|*.log|*.lock|*.sum|*.mod|*.exe|*.test.go|__debug_bin|coverage|build|dist|out" --dirsfirst
