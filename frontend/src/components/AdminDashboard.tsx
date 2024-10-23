@@ -6,6 +6,7 @@ import { useAuthContext } from '@/app/auth/AuthProvider';
 import { fetchWithAuth } from '@/utils/api';
 import { RentalProperty } from '@/types/RentalProperty';
 import LoadingSpinner from './LoadingSpinner';
+import Image from 'next/image';
 
 export default function AdminDashboard() {
   const { user, loading } = useAuthContext();
@@ -109,7 +110,7 @@ export default function AdminDashboard() {
                 <p className="text-foreground">Bathrooms: {property.bathrooms}</p>
                 <p className="text-foreground">Area: {property.area} sq ft</p>
                 {property.imageUrls.length > 0 && (
-                  <img src={property.imageUrls[0]} alt={property.name} className="mt-2 w-full h-40 object-cover rounded" />
+                  <Image src={property.imageUrls[0]} alt={property.name} width={500} height={300} />
                 )}
               </li>
             ))}

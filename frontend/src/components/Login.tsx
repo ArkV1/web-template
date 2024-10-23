@@ -1,116 +1,221 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuthContext } from '@/app/auth/AuthProvider';
-import Link from 'next/link';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import AuthFormContainer from './AuthFormContainer';
+import Image from "next/image";
+import { useAuth } from "@/hooks/useAuth";
+import { useState } from "react";
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loginError, setLoginError] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { login, user } = useAuthContext();
-  const router = useRouter();
+  const { loginWithGoogle, loginWithFacebook, loginWithEmail } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (user) {
-      router.push('/profile');
-    }
-  }, [user, router]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoginError(null);
-    setIsSubmitting(true);
     try {
-      await login(email, password);
-      router.push('/profile');
-    } catch (error: any) {
-      console.error('Login failed:', error);
-      setLoginError(getErrorMessage(error.code));
-    } finally {
-      setIsSubmitting(false);
+      setError(null);
+      await loginWithEmail(email, password);
+      // Handle successful login (e.g., redirect)
+    } catch (err) {
+      setError("Failed to login. Please check your credentials.");
+      console.error(err);
     }
   };
 
-  const getErrorMessage = (errorCode: string) => {
-    switch (errorCode) {
-      case 'auth/invalid-credential':
-        return 'Invalid email or password. Please try again.';
-      case 'auth/user-not-found':
-        return 'No user found with this email address.';
-      case 'auth/wrong-password':
-        return 'Incorrect password. Please try again.';
-      case 'auth/invalid-email':
-        return 'Invalid email address.';
-      case 'auth/user-disabled':
-        return 'This account has been disabled.';
-      default:
-        return 'An error occurred during login. Please try again.';
+  const handleGoogleLogin = async () => {
+    try {
+      setError(null);
+      await loginWithGoogle();
+      // Handle successful login
+    } catch (err) {
+      setError("Failed to login with Google.");
+      console.error(err);
+    }
+  };
+
+  const handleFacebookLogin = async () => {
+    try {
+      setError(null);
+      await loginWithFacebook();
+      // Handle successful login
+    } catch (err) {
+      setError("Failed to login with Facebook.");
+      console.error(err);
     }
   };
 
   return (
-    <AuthFormContainer>
-      <div>
-        <h2 className="text-center text-3xl font-extrabold text-foreground">Sign in to your account</h2>
-      </div>
-      <form className="space-y-6" onSubmit={handleSubmit}>
-        <div className="rounded-md shadow-sm -space-y-px">
-          <div>
-            <label htmlFor="email-address" className="sr-only">Email address</label>
-            <input
-              id="email-address"
-              name="email"
-              type="email"
-              autoComplete="email"
-              required
-              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-secondary placeholder-gray-500 text-foreground rounded-t-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm bg-background"
-              placeholder="Email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+      <div className="bg-white w-full max-w-6xl min-h-[600px] rounded-lg flex">
+        {/* Left Side - Login Form */}
+        <div className="w-1/2 p-12">
+          <h1 className="text-3xl font-bold mb-4">Log In to Your Brand</h1>
+          <p className="text-neutral-600 mb-8">
+            Log in to get personalized content recommendations, destinations and events you love and quick booking
+          </p>
+
+          {/* Social Buttons */}
+          <div className="space-y-4 mb-8">
+            <button
+              onClick={handleGoogleLogin}
+              className="w-full flex items-center justify-center gap-3 border border-neutral-200 p-3 rounded-lg hover:bg-neutral-50 transition-colors"
+            >
+              <Image
+                src="/assets/google-icon.svg"
+                alt="Google"
+                width={24}
+                height={24}
+              />
+              <span>Log in with Google</span>
+            </button>
+
+            <button
+              onClick={handleFacebookLogin}
+              className="w-full flex items-center justify-center gap-3 border border-neutral-200 p-3 rounded-lg hover:bg-neutral-50 transition-colors"
+            >
+              <Image
+                src="/assets/facebook-icon.svg"
+                alt="Facebook"
+                width={24}
+                height={24}
+              />
+              <span>Log in with Facebook</span>
+            </button>
           </div>
-          <div>
-            <label htmlFor="password" className="sr-only">Password</label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-secondary placeholder-gray-500 text-foreground rounded-b-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm bg-background"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+
+          {/* Divider */}
+          <div className="relative my-8">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-neutral-200"></div>
+            </div>
+            <div className="relative flex justify-center">
+              <span className="bg-white px-4 text-sm text-neutral-500">Or</span>
+            </div>
           </div>
-        </div>
-        <div>
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full flex justify-center items-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary h-10"
-          >
-            {isSubmitting ? (
-              <LoadingSpinner size="small" />
-            ) : (
-              <span>Sign in</span>
+
+          {/* Email Form */}
+          <form onSubmit={handleEmailLogin}>
+            {error && (
+              <div className="mb-4 text-red-500 text-sm">
+                {error}
+              </div>
             )}
-          </button>
+            <div className="mb-6">
+              <label className="block text-sm font-medium mb-2">
+                Your Email Address
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full p-3 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent"
+                placeholder="Email"
+                required
+              />
+            </div>
+            <div className="mb-6">
+              <label className="block text-sm font-medium mb-2">
+                Password
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full p-3 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-transparent"
+                placeholder="Password"
+                required
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-neutral-900 text-white p-3 rounded-lg hover:bg-neutral-800 transition-colors flex items-center justify-center gap-2"
+            >
+              Login
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </form>
+
+          {/* Footer */}
+          <p className="text-center mt-8">
+            Not a member?{" "}
+            <button className="text-neutral-900 font-medium hover:underline">
+              Sign up now
+            </button>
+          </p>
         </div>
-      </form>
-      <div className="text-center mt-4">
-        <p className="text-sm text-foreground">
-          Don't have an account?{' '}
-          <Link href="/register" className="font-medium text-primary hover:text-primary-hover">
-            Register here
-          </Link>
-        </p>
+
+        {/* Right Side - Image and Luna Program */}
+        <div className="w-1/2 bg-neutral-50 p-12 rounded-r-lg">
+          <div className="mb-12">
+            <Image
+              src="/imgs/sign-in.png"
+              alt="Login illustration"
+              width={400}
+              height={300}
+              className="w-full h-auto"
+            />
+          </div>
+
+          <div className="space-y-6">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-neutral-200 rounded-full"></div>
+              <h2 className="text-xl font-bold">
+                <strong>Meet Luna Nueva</strong> our new loyalty program
+              </h2>
+            </div>
+
+            <p className="text-neutral-600">
+              Sign up to Your Brand and start benefit from our Luna Nueva membership
+            </p>
+
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                "Complimentary Welcome Drink",
+                "Members Rates @ Brand Retail Shops",
+                "Authentic Local Experiences",
+                "Access to Global Book Exchange",
+                "Free Wellness Activity",
+                "Earn Tokens via Volunteering Activities",
+              ].map((benefit) => (
+                <div key={benefit} className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-neutral-900 rounded-full"></div>
+                  <span className="text-sm">{benefit}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Close Button */}
+        <button className="absolute top-4 right-4 p-2">
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
       </div>
-    </AuthFormContainer>
+    </div>
   );
 }

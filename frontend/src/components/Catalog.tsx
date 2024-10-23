@@ -1,43 +1,44 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { getRentalProperties } from '@/utils/api';
+import { fetchProperties } from '@/utils/api';
 import { RentalProperty } from '@/types/RentalProperty';
+import Link from 'next/link';
 
-const Catalog: React.FC = () => {
-  const [properties, setProperties] = useState<RentalProperty[] | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+interface CatalogProps {
+  limit?: number;
+}
+
+const Catalog: React.FC<CatalogProps> = ({ limit }) => {
+  const [properties, setProperties] = useState<RentalProperty[]>([]);
 
   useEffect(() => {
-    const fetchProperties = async () => {
-      try {
-        const data = await getRentalProperties();
-        setProperties(data);
-      } catch (err) {
-        setError('Failed to fetch properties');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
+    const loadProperties = async () => {
+      const fetchedProperties = await fetchProperties();
+      setProperties(limit ? fetchedProperties.slice(0, limit) : fetchedProperties);
     };
-
-    fetchProperties();
-  }, []);
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!properties || properties.length === 0) return <div>No properties found.</div>;
+    loadProperties();
+  }, [limit]);
 
   return (
-    <div>
-      <h1>Rental Properties</h1>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
       {properties.map((property) => (
-        <div key={property.id}>
-          <h2>{property.title}</h2>
-          <p>{property.description}</p>
-          <p>Price: ${property.price}</p>
-        </div>
+        <Link href={`/property/${property.id}`} key={property.id} className="block">
+          <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105">
+            <img src={property.imageUrls[0]} alt={property.name} className="w-full h-48 object-cover" />
+            <div className="p-4">
+              <h3 className="text-lg font-semibold mb-2">{property.name}</h3>
+              <p className="text-gray-600 mb-2 truncate">{property.description}</p>
+              <div className="flex justify-between items-center">
+                <span className="text-primary font-bold">${property.price} / night</span>
+                <div className="flex items-center">
+                  <span className="text-yellow-500 mr-1">★</span>
+                  <span>{property.rating.toFixed(1)}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Link>
       ))}
     </div>
   );

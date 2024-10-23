@@ -1,4 +1,4 @@
-Layout extraction started at: 2024-10-13 05:25:31
+Layout extraction started at: 2024-10-23 17:03:06
 
 .
 |-- backend
@@ -17,6 +17,9 @@ Layout extraction started at: 2024-10-13 05:25:31
 |   |-- main.go
 |   `-- silicon-valley-garage-firebase-adminsdk-5ugqy-f4fe78d92d.json
 |-- frontend
+|   |-- public
+|   |   `-- assets
+|   |       `-- logo_HUIS.svg
 |   |-- src
 |   |   |-- app
 |   |   |   |-- admin
@@ -40,14 +43,24 @@ Layout extraction started at: 2024-10-13 05:25:31
 |   |   |   |-- metadata.ts
 |   |   |   `-- page.tsx
 |   |   |-- components
+|   |   |   |-- home
+|   |   |   |   |-- AppDownloadSection.tsx
+|   |   |   |   |-- CommunitySection.tsx
+|   |   |   |   |-- DestinationsSection.tsx
+|   |   |   |   |-- ExperiencesSection.tsx
+|   |   |   |   |-- HeroSection.tsx
+|   |   |   |   |-- NewsletterSection.tsx
+|   |   |   |   `-- index.ts
 |   |   |   |-- AdminDashboard.tsx
 |   |   |   |-- AuthFormContainer.tsx
 |   |   |   |-- Catalog.tsx
+|   |   |   |-- Footer.tsx
 |   |   |   |-- Header.tsx
 |   |   |   |-- LoadingSpinner.tsx
 |   |   |   |-- Login.tsx
 |   |   |   |-- Profile.tsx
-|   |   |   `-- Register.tsx
+|   |   |   |-- Register.tsx
+|   |   |   `-- SocialIcon.tsx
 |   |   |-- hooks
 |   |   |   `-- useAuth.ts
 |   |   |-- lib
@@ -58,6 +71,7 @@ Layout extraction started at: 2024-10-13 05:25:31
 |   |   `-- utils
 |   |       `-- api.ts
 |   |-- README.md
+|   |-- firebase.json
 |   |-- next-env.d.ts
 |   |-- next.config.mjs
 |   |-- package-lock.json
@@ -65,7 +79,9 @@ Layout extraction started at: 2024-10-13 05:25:31
 |   |-- postcss.config.mjs
 |   |-- tailwind.config.ts
 |   `-- tsconfig.json
+|-- web_page
+|   `-- Selina - Home.html
 |-- README.md
 `-- template-progress.md
 
-22 directories, 45 files
+26 directories, 57 files

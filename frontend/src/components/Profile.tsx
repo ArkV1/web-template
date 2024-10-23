@@ -16,6 +16,15 @@ export default function Profile() {
     }
   };
 
+  // Add a check for when user is null
+  if (!user) {
+    return (
+      <div className="flex items-center justify-center bg-background py-12 px-4 sm:px-6 lg:px-8">
+        <p className="text-foreground">Please log in to view your profile.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="flex items-center justify-center bg-background py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 p-8 bg-secondary rounded-lg shadow-md">

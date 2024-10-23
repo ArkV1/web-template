@@ -1,45 +1,30 @@
 "use client";
 
-import localFont from "next/font/local";
+import { Inter } from "next/font/google";
 import "./globals.css";
-import { AuthProvider } from "@/app/auth/AuthProvider";
 import Header from "@/components/Header";
+import Footer from '@/components/Footer'
+import { AuthProvider } from "@/app/auth/AuthProvider";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en" className="dark">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased bg-background text-foreground`}
-      >
-        <AuthProvider>
-          <div className="flex flex-col min-h-screen">
-            <Header />
-            <main className="flex-grow flex items-center justify-center">
+    <html lang="en">
+      <body className={inter.className}>
+        <div className="min-h-screen flex flex-col">
+          <Header />
+          <main className="flex-1 relative z-0">
+            <AuthProvider>
               {children}
-            </main>
-            <footer className="bg-secondary py-4">
-              <div className="container mx-auto px-4 text-center">
-                <p>&copy; 2024 Silicon Valley Garage. All rights reserved.</p>
-              </div>
-            </footer>
-          </div>
-        </AuthProvider>
+            </AuthProvider>
+          </main>
+          <Footer />
+        </div>
       </body>
     </html>
   );
